@@ -1,0 +1,15 @@
+{
+  "name": "getshure",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GETSHURE static storefront",
+  "scripts": {
+    "start": "serve -s . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
