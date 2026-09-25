@@ -988,6 +988,10 @@ body.cart-open { overflow: hidden; }
 .fbt-thumb img {
   width: 100%;
   height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  background: #e8eef4;
   border-radius: 4px;
   border: 1px solid var(--line);
   box-shadow: 0 8px 20px rgba(15, 26, 36, 0.1);

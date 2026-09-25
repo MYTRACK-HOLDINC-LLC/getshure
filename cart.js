@@ -14,7 +14,7 @@
       id: "career",
       title: "Don't Get Replaced by AI",
       price: 29,
-      image: "covers/getshure-final-career.png?v=8",
+      image: "covers/getshure-final-career.jpg?v=12",
       href: "product-career.html",
     },
     family: {
