@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Checkout | GETSHURE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=19" />
+</head>
+<body>
+  <div class="announcement">Free US shipping on orders $40+ · 14-day returns on unused books</div>
+  <header>
+    <a class="brand" href="index.html" aria-label="GETSHURE home">
+      <span class="mark" aria-hidden="true">
+        <img src="covers/getshure-shield-only.png?v=5" alt="" width="36" height="36" />
+      </span>
+      <span class="word">GETSHURE</span>
+    </a>
+    <nav>
+      <a href="index.html#shop">Shop</a>
+      <a href="shipping.html">Shipping</a>
+      <a href="mailto:contact@getshure.com">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="cart" data-open-cart>Cart (0)</button>
+    </div>
+  </header>
+
+  <div class="checkout-wrap">
+    <form class="checkout-card" id="checkout-form" autocomplete="on">
+      <h1>Checkout</h1>
+
+      <p class="checkout-section-label">Contact</p>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
+
+      <p class="checkout-section-label">Shipping address</p>
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" required placeholder="Jane Doe" autocomplete="name" />
+
+      <label for="address">Address</label>
+      <div class="addr-wrap">
+        <input id="address" name="address" type="text" required placeholder="Street address" autocomplete="off" autocapitalize="words" spellcheck="false" />
+        <ul id="addr-suggest" class="addr-suggest" hidden role="listbox"></ul>
+      </div>
+
+      <div class="checkout-row">
+        <div>
+          <label for="city">City</label>
+          <input id="city" name="city" type="text" required autocomplete="address-level2" />
+        </div>
+        <div>
+          <label for="state">State</label>
+          <input id="state" name="state" type="text" required autocomplete="address-level1" maxlength="2" placeholder="CA" />
+        </div>
+      </div>
+      <div class="checkout-row">
+        <div>
+          <label for="zip">ZIP</label>
+          <input id="zip" name="zip" type="text" required autocomplete="postal-code" inputmode="numeric" />
+        </div>
+        <div>
+          <label for="country">Country</label>
+          <select id="country" name="country"><option value="US">United States</option></select>
+        </div>
+      </div>
+
+      <p class="checkout-section-label">Payment</p>
+      <label for="card-name">Name on card</label>
+      <input id="card-name" name="card-name" type="text" required placeholder="Jane Doe" autocomplete="cc-name" />
+
+      <label for="card-number">Card number</label>
+      <input id="card-number" name="card-number" type="text" required placeholder="1234 5678 9012 3456" inputmode="numeric" autocomplete="cc-number" maxlength="19" />
+
+      <div class="checkout-row">
+        <div>
+          <label for="card-exp">Expiration</label>
+          <input id="card-exp" name="card-exp" type="text" required placeholder="MM / YY" inputmode="numeric" autocomplete="cc-exp" maxlength="7" />
+        </div>
+        <div>
+          <label for="card-cvc">Security code</label>
+          <input id="card-cvc" name="card-cvc" type="text" required placeholder="CVC" inputmode="numeric" autocomplete="cc-csc" maxlength="4" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn" style="width:100%;margin-top:22px" id="place-order">Place order</button>
+      <p class="checkout-secure">Secured checkout · Questions: <a href="mailto:contact@getshure.com"><u>contact@getshure.com</u></a></p>
+    </form>
+
+    <aside class="checkout-card checkout-summary">
+      <h2>Order summary</h2>
+      <div id="sum-lines"></div>
+      <div class="checkout-totals" id="sum-totals"></div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="legal-line" style="border:none;margin-top:0;padding:24px 40px">© MetaWise Enterprises, LLC.</div>
+  </footer>
+  <script src="cart.js"></script>
+  <script>
+    (function () {
+      function money(n) { return '$' + n.toFixed(2); }
+      function paint() {
+        var items = GetshureCart.read();
+        var lines = document.getElementById('sum-lines');
+        var totals = document.getElementById('sum-totals');
+        if (!items.length) {
+          lines.innerHTML = '<p style="color:var(--muted)">Your cart is empty. <a href="index.html#shop"><u>Shop books</u></a></p>';
+          totals.innerHTML = '';
+          return;
+        }
+        var sub = 0;
+        lines.innerHTML = items.map(function (i) {
+          var p = GetshureCart.catalog[i.id];
+          if (!p) return '';
+          sub += p.price * i.qty;
+          return '<div class="sum-line"><img src="' + p.image + '" alt="" /><div><strong>' + p.title + '</strong><br>Qty ' + i.qty + '</div><div>' + money(p.price * i.qty) + '</div></div>';
+        }).join('');
+        var ship = sub >= 40 ? 0 : 5.99;
+        totals.innerHTML =
+          '<div><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
+          '<div><span>Shipping</span><span>' + (ship === 0 ? 'Free' : money(ship)) + '</span></div>' +
+          '<div class="grand"><span>Total</span><span>' + money(sub + ship) + '</span></div>';
+      }
+      paint();
+      setInterval(paint, 800);
+
+      /* Card formatting */
+      var cardNum = document.getElementById('card-number');
+      cardNum.addEventListener('input', function () {
+        var d = this.value.replace(/\D/g, '').slice(0, 16);
+        this.value = d.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+      });
+      var cardExp = document.getElementById('card-exp');
+      cardExp.addEventListener('input', function () {
+        var d = this.value.replace(/\D/g, '').slice(0, 4);
+        if (d.length >= 3) this.value = d.slice(0, 2) + ' / ' + d.slice(2);
+        else this.value = d;
+      });
+      document.getElementById('card-cvc').addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 4);
+      });
+
+      /* Address autocomplete (Photon / OSM — works without Google billing) */
+      var US_STATES = {
+        'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO',
+        'connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID',
+        'illinois':'IL','indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA',
+        'maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN',
+        'mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
+        'new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY','north carolina':'NC',
+        'north dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA',
+        'rhode island':'RI','south carolina':'SC','south dakota':'SD','tennessee':'TN','texas':'TX',
+        'utah':'UT','vermont':'VT','virginia':'VA','washington':'WA','west virginia':'WV',
+        'wisconsin':'WI','wyoming':'WY','district of columbia':'DC'
+      };
+      function stateAbbr(s) {
+        if (!s) return '';
+        if (s.length === 2) return s.toUpperCase();
+        return US_STATES[s.toLowerCase()] || s;
+      }
+      function formatFeature(f) {
+        var p = f.properties || {};
+        var street = [p.housenumber, p.street || p.name].filter(Boolean).join(' ').trim();
+        var city = p.city || p.town || p.village || p.county || '';
+        var state = stateAbbr(p.state);
+        var zip = p.postcode || '';
+        var line = [street, city, state].filter(Boolean).join(', ');
+        if (zip) line += ' ' + zip;
+        return { street: street, city: city, state: state, zip: zip, label: line };
+      }
+
+      var input = document.getElementById('address');
+      var list = document.getElementById('addr-suggest');
+      var timer = null;
+      var lastResults = [];
+
+      function hideSuggest() {
+        list.hidden = true;
+        list.innerHTML = '';
+      }
+      function showSuggest(items) {
+        lastResults = items;
+        if (!items.length) { hideSuggest(); return; }
+        list.innerHTML = items.map(function (it, i) {
+          return '<li role="option" data-i="' + i + '">' + it.label.replace(/</g, '&lt;') + '</li>';
+        }).join('');
+        list.hidden = false;
+      }
+      function pick(i) {
+        var it = lastResults[i];
+        if (!it) return;
+        input.value = it.street;
+        document.getElementById('city').value = it.city;
+        document.getElementById('state').value = it.state;
+        document.getElementById('zip').value = it.zip;
+        hideSuggest();
+      }
+      list.addEventListener('mousedown', function (e) {
+        var li = e.target.closest('li[data-i]');
+        if (!li) return;
+        e.preventDefault();
+        pick(parseInt(li.getAttribute('data-i'), 10));
+      });
+      input.addEventListener('blur', function () { setTimeout(hideSuggest, 150); });
+      input.addEventListener('input', function () {
+        var q = input.value.trim();
+        clearTimeout(timer);
+        if (q.length < 3) { hideSuggest(); return; }
+        timer = setTimeout(function () {
+          fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=8&lang=en')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              var feats = (data.features || []).filter(function (f) {
+                var p = f.properties || {};
+                return (p.countrycode || '').toUpperCase() === 'US' ||
+                  (p.country || '').toLowerCase().indexOf('united states') !== -1;
+              }).map(formatFeature).filter(function (it) { return it.street; });
+              /* dedupe */
+              var seen = {};
+              feats = feats.filter(function (it) {
+                if (seen[it.label]) return false;
+                seen[it.label] = 1;
+                return true;
+              }).slice(0, 6);
+              showSuggest(feats);
+            })
+            .catch(function () { hideSuggest(); });
+        }, 220);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') hideSuggest();
+      });
+
+      document.getElementById('checkout-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = e.target;
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        if (!GetshureCart.read().length) {
+          alert('Your cart is empty.');
+          return;
+        }
+        var items = GetshureCart.read();
+        var sub = 0;
+        items.forEach(function (i) {
+          var p = GetshureCart.catalog[i.id];
+          if (p) sub += p.price * i.qty;
+        });
+        var ship = sub >= 40 ? 0 : 5.99;
+        var order = {
+          email: document.getElementById('email').value,
+          name: document.getElementById('name').value,
+          address: document.getElementById('address').value,
+          city: document.getElementById('city').value,
+          state: document.getElementById('state').value,
+          zip: document.getElementById('zip').value,
+          total: sub + ship,
+          items: items,
+          id: 'GS' + Date.now().toString().slice(-8)
+        };
+        try { sessionStorage.setItem('getshure_last_order', JSON.stringify(order)); } catch (err) {}
+        GetshureCart.clear();
+        window.location.href = 'order-confirmation.html';
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Order confirmed | GETSHURE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=19" />
+</head>
+<body>
+  <div class="announcement">Free US shipping on orders $40+ · 14-day returns on unused books</div>
+  <header>
+    <a class="brand" href="index.html" aria-label="GETSHURE home">
+      <span class="mark" aria-hidden="true">
+        <img src="covers/getshure-shield-only.png?v=5" alt="" width="36" height="36" />
+      </span>
+      <span class="word">GETSHURE</span>
+    </a>
+    <nav>
+      <a href="index.html#shop">Shop</a>
+      <a href="shipping.html">Shipping</a>
+      <a href="mailto:contact@getshure.com">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="cart" data-open-cart>Cart (0)</button>
+    </div>
+  </header>
+
+  <main class="confirm-wrap">
+    <div class="checkout-card confirm-card">
+      <div class="confirm-check" aria-hidden="true">✓</div>
+      <h1>Thank you for your order</h1>
+      <p class="confirm-lead" id="confirm-lead">We’ve received your order and sent a confirmation email.</p>
+      <div class="confirm-meta" id="confirm-meta"></div>
+      <div class="confirm-ship" id="confirm-ship"></div>
+      <a class="btn" href="index.html#shop" style="display:inline-block;margin-top:8px;text-align:center;text-decoration:none">Continue shopping</a>
+      <p class="checkout-secure" style="margin-top:20px">Need help? <a href="mailto:contact@getshure.com"><u>contact@getshure.com</u></a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="legal-line" style="border:none;margin-top:0;padding:24px 40px">© MetaWise Enterprises, LLC.</div>
+  </footer>
+  <script src="cart.js"></script>
+  <script>
+    (function () {
+      var raw = null;
+      try { raw = sessionStorage.getItem('getshure_last_order'); } catch (e) {}
+      if (!raw) {
+        document.getElementById('confirm-lead').textContent = 'Your order is confirmed.';
+        return;
+      }
+      var o = JSON.parse(raw);
+      document.getElementById('confirm-lead').textContent =
+        'We’ve emailed a receipt to ' + o.email + '.';
+      document.getElementById('confirm-meta').innerHTML =
+        '<div><span>Order</span><strong>#' + o.id + '</strong></div>' +
+        '<div><span>Total</span><strong>$' + Number(o.total).toFixed(2) + '</strong></div>';
+      document.getElementById('confirm-ship').innerHTML =
+        '<p class="confirm-ship-label">Shipping to</p>' +
+        '<p>' + o.name + '<br>' + o.address + '<br>' + o.city + ', ' + o.state + ' ' + o.zip + '</p>';
+    })();
+  </script>
+</body>
+</html>

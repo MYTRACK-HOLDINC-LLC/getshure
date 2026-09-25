@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>GETSHURE | Hardcover guides to survive AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=19" />
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    align-items: center;
+    padding: 64px 0 48px;
+  }
+  /* DOM = image first (mobile-native). Desktop places copy in col 1. */
+  .hero-copy { grid-column: 1; grid-row: 1; }
+  .hero-panel { grid-column: 2; grid-row: 1; }
+  .hero h1 {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5.2vw, 62px);
+    line-height: 1.04;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+  }
+  .hero .lede {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 40ch;
+    margin: 0 0 26px;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+  .trust { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
+  .trust span { display: inline-flex; align-items: center; gap: 6px; }
+  .hero-panel {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
+    min-width: 0;
+  }
+  .hero-trio {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    object-fit: contain;
+    object-position: center center;
+  }
+  .hero-panel .cap {
+    text-align: center;
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .story {
+    background: var(--navy);
+    color: #e8eef4;
+    border-top: none;
+    border-bottom: none;
+    padding: 72px 0;
+  }
+  .story-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .story h2 {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.1;
+    margin: 0 0 16px;
+    color: #fff;
+  }
+  .story p { color: #b8c4d0; font-size: 17px; margin: 0 0 14px; }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .stat b {
+    display: block;
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .stat span { font-size: 13px; color: #9aabbc; }
+
+  /* top/bottom only — never wipe .wrap left/right gutters */
+  .section { padding-top: 72px; padding-bottom: 72px; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .section-head h2 {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    font-size: 38px;
+    margin: 0;
+    color: var(--navy);
+  }
+  .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(15, 40, 70, 0.1);
+  }
+  .cover {
+    aspect-ratio: 3 / 4;
+    max-height: none;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #eef2f6;
+    overflow: hidden;
+    padding: 18px 18px 10px;
+    color: inherit;
+  }
+  a.cover { cursor: pointer; }
+  .card-body h4 a:hover { text-decoration: underline; }
+  button.btn, button.cart {
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  .cover img {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    border-radius: 2px;
+    box-shadow: 0 8px 20px rgba(15, 30, 50, 0.18);
+  }
+  .badge {
+    position: absolute;
+    top: 14px; left: 14px;
+    background: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 5px 9px;
+    border-radius: 999px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  .card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+  .rating { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .card-body h4 { font-size: 18px; font-weight: 600; margin: 0 0 8px; color: var(--navy); }
+  .card-body p { margin: 0 0 18px; color: var(--muted); font-size: 14px; flex: 1; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .price { font-size: 22px; font-weight: 700; }
+  .price small { font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 4px; }
+
+  /* Shop presentation variants (A–E) — toggled via ?shop= */
+  #shop.shop-a .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  #shop.shop-a .card:hover { transform: none; box-shadow: none; }
+  #shop.shop-a .cover {
+    background: transparent;
+    padding: 0;
+    overflow: visible;
+  }
+  #shop.shop-a .cover img {
+    box-shadow: none;
+    filter: drop-shadow(0 14px 28px rgba(15,30,50,.18));
+  }
+  #shop.shop-a .badge { box-shadow: 0 2px 10px rgba(0,0,0,.16); }
+
+  #shop.shop-b .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  #shop.shop-b .card:hover { transform: none; box-shadow: none; }
+  #shop.shop-b .cover {
+    background: var(--soft);
+    border-radius: 14px;
+    padding: 18px 16px 12px;
+  }
+
+  #shop.shop-c .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  #shop.shop-c .card:hover { transform: none; box-shadow: none; }
+  #shop.shop-c .cover {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 22px 18px 16px;
+  }
+  #shop.shop-c .cover img {
+    box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  }
+
+  #shop.shop-d .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  #shop.shop-d .card:hover { transform: none; box-shadow: none; }
+  #shop.shop-d .cover {
+    background: var(--sage);
+    border-radius: 14px;
+    padding: 18px 16px 12px;
+  }
+
+  #shop.shop-e .card {
+    border: none;
+    box-shadow: 0 12px 36px rgba(15,40,70,.1);
+  }
+  #shop.shop-e .cover {
+    background: transparent;
+    padding: 16px 16px 4px;
+  }
+
+  .reviews h2, .faq h2 {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    font-size: 38px;
+    margin: 0 0 8px;
+    text-align: center;
+    color: var(--navy);
+  }
+  .subhead { text-align: left; color: var(--muted); margin: 0 0 36px; }
+  .reviews h2 + .subhead,
+  .faq h2 + .subhead { text-align: center; }
+  .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .review {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+  }
+  .review .top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--soft);
+  }
+  .who strong { display: block; font-size: 14px; }
+  .who span { font-size: 12px; color: var(--muted); }
+  .review p { margin: 0; font-size: 15px; }
+
+  .faq { background: var(--sage); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .faq-list { max-width: 760px; margin: 0 auto; }
+  details {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--muted); font-weight: 400; font-size: 20px; }
+  details[open] summary::after { content: "–"; }
+  details p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .app-card {
+    background: var(--green);
+    color: #f4f6f8;
+    border-radius: 18px;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    align-items: center;
+    margin: 72px 0;
+  }
+  .app-card h3 {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    font-size: 34px;
+    margin: 0 0 10px;
+  }
+  .app-card p { margin: 0; color: #c5d8ce; max-width: 44ch; }
+  .app-card .btn { justify-self: end; background: #fff; color: var(--green); }
+
+  @media (max-width: 900px) {
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding: 20px 0 28px;
+    }
+    .hero-copy,
+    .hero-panel {
+      grid-column: auto;
+      grid-row: auto;
+      width: 100%;
+      max-width: 100%;
+    }
+    .hero-panel {
+      order: 0;
+      padding: 4px 0 0;
+    }
+    .hero-trio { max-width: 100%; }
+    .hero-copy { order: 1; }
+    .hero h1 {
+      font-size: clamp(32px, 8.5vw, 40px);
+      overflow-wrap: anywhere;
+    }
+    .hero .lede {
+      font-size: 16px;
+      max-width: none;
+    }
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .story { padding: 36px 0; }
+    .story-inner { grid-template-columns: 1fr; gap: 22px; }
+    .story h2 { font-size: 30px; }
+    .stat-grid { grid-template-columns: 1fr; gap: 10px; }
+    .stat { padding: 16px 18px; }
+    .stat b { font-size: 28px; }
+    .section { padding-top: 36px; padding-bottom: 36px; }
+    .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .section-head h2 { font-size: 30px; }
+    .grid { grid-template-columns: 1fr; gap: 28px; }
+    /* Shop covers: centered, not full-bleed stretch */
+    .cover {
+      padding: 0;
+      max-height: none;
+      aspect-ratio: auto;
+      height: auto;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .cover img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      aspect-ratio: 3 / 4;
+      object-fit: contain;
+    }
+    #shop.shop-a .card-body {
+      padding: 16px 4px 8px;
+      text-align: left;
+    }
+    #shop.shop-a .cover {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .cover-book {
+      display: none;
+    }
+    .row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .row .btn { width: 100%; }
+
+    .review {
+      width: 100%;
+      padding: 18px;
+    }
+    .review .stars { margin: 4px 0 10px; display: block; }
+    .review-grid { grid-template-columns: 1fr; }
+
+    .faq-list { max-width: 100%; }
+    .app-card {
+      grid-template-columns: 1fr;
+      padding: 28px 20px;
+      margin: 40px 0;
+      gap: 18px;
+      width: 100%;
+    }
+    .app-card h3 { font-size: 28px; }
+    .app-card .btn {
+      justify-self: stretch;
+      width: 100%;
+    }
+  }
+
+  .reviews-band .subhead { text-align: left !important; }
+</style>
+</head>
+<body>
+  <div class="announcement">Free US shipping on orders $40+ · 14-day returns on unused books</div>
+  <header>
+    <a class="brand" href="index.html" aria-label="GETSHURE home">
+      <span class="mark" aria-hidden="true">
+        <img src="covers/getshure-shield-only.png?v=5" alt="" width="36" height="36" />
+      </span>
+      <span class="word">GETSHURE</span>
+    </a>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#story">Why us</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="cart" data-open-cart>Cart (0)</button>
+      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+    </div>
+  </header>
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    <a href="#shop">Shop</a>
+    <a href="#story">Why us</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="shipping.html">Shipping</a>
+    <a href="mailto:contact@getshure.com">Contact</a>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-panel">
+        <img class="hero-trio" src="covers/getshure-hero-trio-3d.png?v=4" width="1629" height="979" alt="GETSHURE hardcover guides: Don’t Get Screwed by AI, Don’t Get Replaced by AI, Keep Your Family Safe from AI" />
+        <p class="cap">Hardcovers to survive AI: money, family, and work.</p>
+      </div>
+      <div class="hero-copy">
+        <h1>A store for surviving AI.</h1>
+        <p class="lede">AI spies on your data. It runs scams. It replaces jobs. It messes with your kids online. GETSHURE publishes short hardcovers so you know what to do, not what to fear.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#shop">Shop the books →</a>
+          <a class="btn ghost" href="#story">Why GETSHURE</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="story" id="story">
+    <div class="wrap story-inner">
+      <div>
+        <h2>AI got powerful, fast. We help you keep up.</h2>
+        <p>In a few years AI went from a novelty to something that can clone a voice, fake a face, open doors to your data, and change how work gets done. Scams look more real. Privacy is easier to lose. Jobs won’t look like they used to.</p>
+        <p>GETSHURE is here for that. Short hardcovers that explain what’s going on and what you can actually do, for your money, your family, and your career.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><b>Fast</b><span>AI went from novelty to everyday power in just a few years</span></div>
+        <div class="stat"><b>Scams</b><span>voice clones and deepfakes that can sound like family or your bank</span></div>
+        <div class="stat"><b>Data</b><span>personal info is easier than ever to pull without you noticing</span></div>
+        <div class="stat"><b>Work</b><span>jobs won’t look like they used to, and waiting isn’t a plan</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section shop-a" id="shop">
+    <div class="section-head">
+      <h2>The books</h2>
+      <p>$29 each · hardcover · ships US</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <a class="cover" href="product-screwed.html">
+          <span class="badge">Bestseller</span>
+          <img src="covers/getshure-final-screwed.png?v=8" alt="Don’t Get Screwed by AI cover" width="400" height="533" />
+        </a>
+        <div class="card-body">
+          <div class="rating"><span class="stars">★★★★★</span> 4.9 · 3,284 reviews</div>
+          <h4><a href="product-screwed.html">Don’t Get Screwed by AI</a></h4>
+          <p>The no-BS guide to spotting scams, deepfakes, and data theft. Our flagship, the one we’re shipping first.</p>
+          <div class="row">
+            <div class="price">$29 <small>hardcover</small></div>
+            <button type="button" class="btn sm" data-add-cart="screwed">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="cover" href="product-career.html">
+          <span class="badge">Career</span>
+          <img src="covers/getshure-final-career.png?v=8" alt="Don’t Get Replaced by AI cover" width="400" height="533" />
+        </a>
+        <div class="card-body">
+          <div class="rating"><span class="stars">★★★★☆</span> 4.7 · 1,942 reviews</div>
+          <h4><a href="product-career.html">Don’t Get Replaced by AI</a></h4>
+          <p>The no-BS guide to future-proofing your job, income, and career. What to learn, what to ignore, and what to do this month.</p>
+          <div class="row">
+            <div class="price">$29 <small>hardcover</small></div>
+            <button type="button" class="btn sm" data-add-cart="career">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="cover" href="product-family.html">
+          <span class="badge">Family</span>
+          <img src="covers/getshure-final-family.png?v=9" alt="Keep Your Family Safe from AI cover" width="400" height="533" />
+        </a>
+        <div class="card-body">
+          <div class="rating"><span class="stars">★★★★★</span> 4.8 · 2,617 reviews</div>
+          <h4><a href="product-family.html">Keep Your Family Safe from AI</a></h4>
+          <p>The no-BS parental guide to online safety, cyberbullying, and voice scams. For parents who want a playbook, not panic.</p>
+          <div class="row">
+            <div class="price">$29 <small>hardcover</small></div>
+            <button type="button" class="btn sm" data-add-cart="family">Add to cart</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="reviews-band" id="reviews">
+    <div class="wrap">
+      <h2>What readers say</h2>
+      <p class="subhead"><span class="stars">★★★★★</span> 4.8 average · 7,800+ reviews</p>
+      <div class="rev-grid">
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Diane M.</strong>
+              <span>Don’t Get Screwed by AI</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>I’m 62. Almost sent money to a caller who sounded exactly like my grandson. Same voice, same panic. Hung up, called his real number, then bought this book the same week. Plain English. No tech snobbery. I finished it over a weekend and I keep it on the kitchen counter. Already stopped one sketchy “bank” text using what I learned.</p>
+        </article>
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Carl R.</strong>
+              <span>Keep Your Family Safe</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>Gave this to my sister after that voice-clone kid scare went around our family group chat. She’s 58, not into “AI stuff,” and she actually finished it. Short enough. Clear enough. We’ve got a family code word now for emergency calls. Sounds small until you need it.</p>
+        </article>
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Patricia H.</strong>
+              <span>Don’t Get Replaced by AI</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>I’m 55 and went back to work after years of caregiving. Everything felt different. Younger hires using AI like it’s nothing. This book didn’t talk down to me or tell me to become a programmer overnight. Just honest advice on staying useful and protecting your income. Best $29 I’ve spent on work stuff in years.</p>
+        </article>
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Robert K.</strong>
+              <span>Don’t Get Screwed by AI</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>Neighbor got hit by a fake IRS call using AI. We read this together the next Saturday. Checklists you can actually use. I ordered another copy for my church group. If you’re over 50 and still treating scam calls like a joke, read this before the joke’s on you.</p>
+        </article>
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Gloria J.</strong>
+              <span>Keep Your Family Safe</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>Two teenagers at home and a dad who lives alone. This covers both. The parental sections are practical, not preachy. The voice scam chapter made my stomach drop because we almost fell for one. We’ve already changed how we answer unknown numbers.</p>
+        </article>
+
+        <article class="rev-card">
+          <div class="rev-top">
+            <img class="rev-av" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces" alt="" width="56" height="56" loading="lazy" />
+            <div>
+              <strong>Eugene M.</strong>
+              <span>Don’t Get Replaced by AI</span>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>Twenty-two years at the same company. Watching AI roll into our department was unsettling. This didn’t sell me hustle culture. It told me what’s changing, what’s hype, and what to do this month. Felt like advice from a straight-talking friend, not a guru.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq section" id="faq">
+    <div class="wrap">
+      <h2>FAQ</h2>
+      <p class="subhead">Straight answers before you order</p>
+      <div class="faq-list">
+        <details open>
+          <summary>Are these real physical books?</summary>
+          <p>Yes. Real hardcovers, printed and shipped to the US.</p>
+        </details>
+        <details>
+          <summary>How long does shipping take?</summary>
+          <p>Most US orders arrive in 5 to 10 business days. Free shipping on orders $40+ (any two books).</p>
+        </details>
+        <details>
+          <summary>What’s your return policy?</summary>
+          <p>14 days on unused copies in original condition. Full details on our <a href="refunds.html"><u>Refunds</u></a> page.</p>
+        </details>
+        <details>
+          <summary>Who publishes GETSHURE?</summary>
+          <p>MetaWise Enterprises, LLC in Coral Springs, Florida. Contact: <a href="mailto:contact@getshure.com"><u>contact@getshure.com</u></a>.</p>
+        </details>
+        <details>
+          <summary>Which book should I buy first?</summary>
+          <p>Start with <strong>Don’t Get Screwed by AI</strong>. That’s our flagship. The family and career guides are next if those are your pressure points.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <div>
+        <strong>GETSHURE</strong>
+        <p>
+          MetaWise Enterprises, LLC<br>
+          11772 W Sample Rd, Suite 103<br>
+          Coral Springs, FL 33065<br>
+          United States
+        </p>
+      </div>
+      <div>
+        <strong>Shop</strong>
+        <a href="#shop">All books</a>
+        <a href="product-screwed.html">Don’t Get Screwed by AI</a>
+        <a href="product-family.html">Keep Your Family Safe</a>
+        <a href="product-career.html">Don’t Get Replaced</a>
+      </div>
+      <div>
+        <strong>Help</strong>
+        <a href="mailto:contact@getshure.com">contact@getshure.com</a>
+        <a href="shipping.html">Shipping</a>
+        <a href="refunds.html">Returns &amp; refunds</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <strong>Legal</strong>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="refunds.html">Refund Policy</a>
+      </div>
+    </div>
+    <div class="legal-line">© MetaWise Enterprises, LLC.</div>
+  </footer>
+  <script src="cart.js"></script>
+  <script>
+    (function () {
+      var btn = document.querySelector('.menu-btn');
+      var nav = document.getElementById('mobile-nav');
+      if (btn && nav) {
+        btn.addEventListener('click', function () {
+          var open = nav.classList.toggle('is-open');
+          nav.hidden = !open;
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.textContent = open ? 'Close' : 'Menu';
+        });
+        nav.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            nav.classList.remove('is-open');
+            nav.hidden = true;
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = 'Menu';
+          });
+        });
+      }
+      var shop = document.getElementById('shop');
+      if (shop) {
+        var m = /[?&]shop=([a-e])/i.exec(location.search);
+        if (m) {
+          shop.className = shop.className.replace(/\bshop-[a-e]\b/g, '').trim();
+          shop.classList.add('shop-' + m[1].toLowerCase());
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
