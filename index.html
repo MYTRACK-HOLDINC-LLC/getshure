@@ -169,25 +169,27 @@
   }
   .badge {
     position: absolute;
-    top: auto;
-    left: 50%;
-    bottom: 10px;
-    transform: translateX(-50%);
-    font-size: 12px;
+    top: 10px;
+    left: 10px;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: .06em;
+    letter-spacing: .05em;
     text-transform: uppercase;
-    padding: 7px 14px;
-    border-radius: 6px;
+    padding: 6px 11px;
+    border-radius: 5px;
     z-index: 2;
     color: #fff;
     white-space: nowrap;
-    box-shadow: 0 4px 14px rgba(0,0,0,.28);
+    box-shadow: 0 3px 12px rgba(0,0,0,.35);
     pointer-events: none;
   }
-  .badge-bestseller { background: #d97706; }
-  .badge-career { background: #0b3a5b; }
-  .badge-family { background: #2f6b4f; }
+  /* High-contrast vs each cover (cream / navy / sage) */
+  .badge-bestseller { background: #c2410c; color: #fff; }
+  .badge-career { background: #fbbf24; color: #0b1f33; }
+  .badge-family { background: #fff7ed; color: #14532d; box-shadow: 0 3px 12px rgba(0,0,0,.25), inset 0 0 0 1.5px #166534; }
   .card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
   .rating { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
   .card-body h4 { font-size: 18px; font-weight: 600; margin: 0 0 8px; color: var(--navy); }
@@ -214,8 +216,8 @@
     filter: drop-shadow(0 14px 28px rgba(15,30,50,.18));
   }
   #shop.shop-a .badge {
-    bottom: 6px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.32);
+    top: 8px;
+    left: 8px;
   }
 
   #shop.shop-b .card {
@@ -541,7 +543,7 @@
       <article class="card">
         <a class="cover" href="product-career.html">
           <span class="badge badge-career">Career guide</span>
-          <img src="covers/getshure-final-career.png?v=8" alt="Don’t Get Replaced by AI cover" width="400" height="533" />
+          <img src="covers/getshure-final-career.png?v=11" alt="Don’t Get Replaced by AI cover" width="400" height="533" />
         </a>
         <div class="card-body">
           <div class="rating"><span class="stars">★★★★☆</span> 4.7 · 1,942 reviews</div>
